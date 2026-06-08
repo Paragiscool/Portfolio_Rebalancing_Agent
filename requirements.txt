@@ -1,0 +1,13 @@
+langchain
+crewai
+pandas
+numpy
+scipy
+cvxpy
+shap
+lime
+streamlit
+pytest
+black
+ruff
+pydantic

@@ -1,0 +1,14 @@
+# Core System Configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+simulation:
+  num_portfolios: 50000
+  num_securities: 500
+  trading_days: 252
+
+agent:
+  max_iterations: 3
+  llm_temperature: 0.2
+  verbose: true

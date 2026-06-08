@@ -1,0 +1,15 @@
+# Thresholds for Triggers and Constraints
+
+triggers:
+  factor_tilt_std_dev: 1.5
+  concentration_hard_limit: 0.10
+  market_crash_drop: 0.10
+
+constraints:
+  max_turnover: 0.20
+  minimum_trade_size: 1000
+
+costs:
+  brokerage_bps: 5
+  stt_bps: 10
+  market_impact_coefficient: 0.1
