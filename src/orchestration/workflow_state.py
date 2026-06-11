@@ -1,8 +1,13 @@
 import uuid
 from enum import Enum
 from typing import Dict, Any, List, Optional
-from datetime import datetime
+from datetime import datetime, timezone
 from pydantic import BaseModel, Field
+
+
+def _utc_now() -> datetime:
+    """Return current UTC time in a non-deprecated way."""
+    return datetime.now(timezone.utc)
 
 
 class WorkflowStatus(str, Enum):
@@ -16,7 +21,7 @@ class WorkflowStatus(str, Enum):
 
 
 class AuditLog(BaseModel):
-    timestamp: datetime = Field(default_factory=datetime.utcnow)
+    timestamp: datetime = Field(default_factory=_utc_now)
     agent_name: str
     action: str
     details: Dict[str, Any] = Field(default_factory=dict)
@@ -46,8 +51,8 @@ class WorkflowState(BaseModel):
 
     # Tracking
     audit_trail: List[AuditLog] = Field(default_factory=list)
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=_utc_now)
+    updated_at: datetime = Field(default_factory=_utc_now)
 
     def transition(
         self,
@@ -58,7 +63,7 @@ class WorkflowState(BaseModel):
     ):
         """Transition the workflow to a new status and log the action."""
         self.status = new_status
-        self.updated_at = datetime.utcnow()
+        self.updated_at = _utc_now()
 
         self.audit_trail.append(
             AuditLog(agent_name=agent_name, action=action, details=details or {})

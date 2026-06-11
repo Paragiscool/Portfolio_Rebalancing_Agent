@@ -13,12 +13,25 @@ class PortfolioAnalystAgent:
             # Wrap Day 2 DriftCalculator and Day 3 TriggerEvaluator here
             # Mocking for architectural skeleton
             drift = random.uniform(0.01, 0.08)
-            state.drift_results = {"needs_rebalance": drift > 0.05, "max_drift": drift}
+            needs_rebalance = drift > 0.05
+            state.drift_results = {
+                "needs_rebalance": needs_rebalance,
+                "max_drift": round(drift, 6),
+            }
             state.transition(
                 WorkflowStatus.DRIFT_ANALYZED,
                 "PortfolioAnalystAgent",
                 "Calculated drift",
+                {"max_drift": round(drift, 6), "needs_rebalance": needs_rebalance},
             )
+
+            # If no rebalancing is needed, mark as completed immediately
+            if not needs_rebalance:
+                state.transition(
+                    WorkflowStatus.COMPLETED,
+                    "PortfolioAnalystAgent",
+                    "No rebalance needed — drift within acceptable band",
+                )
         except Exception as e:
             state.transition(
                 WorkflowStatus.FAILED, "PortfolioAnalystAgent", f"Error: {str(e)}"
@@ -84,7 +97,10 @@ class ExplanationAgent:
 
         try:
             # Wrap Day 6 LangChain logic here
-            state.explanation = "Rebalanced portfolio due to threshold drift. Executed trades minimizing tracking error."
+            state.explanation = (
+                "Rebalanced portfolio due to threshold drift. "
+                "Executed trades minimizing tracking error."
+            )
             state.transition(
                 WorkflowStatus.EXPLAINED,
                 "ExplanationAgent",

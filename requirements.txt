@@ -11,3 +11,5 @@ pytest
 black
 ruff
 pydantic
+pyyaml
+pyarrow
