@@ -13,3 +13,14 @@ costs:
   brokerage_bps: 5
   stt_bps: 10
   market_impact_coefficient: 0.1
+
+tax_and_liquidity:
+  # Tax Rules
+  wash_sale_window_days: 30       # IRS standard: 30 days before/after a realized loss
+  long_term_holding_days: 365     # Threshold for short-term vs long-term capital gains
+  min_harvestable_loss_usd: 500   # Minimum dollar loss required to trigger proactive TLH
+  min_harvestable_loss_pct: 0.03  # Minimum percentage drop to justify transaction costs
+  
+  # Liquidity Rules
+  max_adv_participation_rate: 0.05 # Cap single-day trade volume at 5% of ADV
+  illiquid_schedule_threshold: 0.10 # Trigger TWAP/VWAP multi-day slicing if trade > 10% ADV

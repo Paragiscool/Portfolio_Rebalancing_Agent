@@ -1,6 +1,7 @@
 import numpy as np
 import cvxpy as cp
 import pandas as pd
+from typing import Dict, Optional
 
 
 class PortfolioOptimiser:
@@ -14,6 +15,8 @@ class PortfolioOptimiser:
         current_weights: np.ndarray,
         target_weights: np.ndarray,
         covariance_matrix: np.ndarray,
+        market_data: Optional[Dict[str, np.ndarray]] = None,
+        total_portfolio_value: float = 1.0,
     ) -> np.ndarray:
         """
         Solves the quadratic programming problem to minimize tracking error
@@ -44,6 +47,14 @@ class PortfolioOptimiser:
         max_turnover = self.constraint_manager.get_max_turnover()
         turnover = 0.5 * cp.norm(w - current_weights, 1)
         constraints.append(turnover <= max_turnover)
+
+        # Liquidity constraint (if market_data provided)
+        if market_data is not None and "adv" in market_data and "prices" in market_data:
+            max_weight_change = self.constraint_manager.get_liquidity_bounds_weights(
+                total_portfolio_value, market_data
+            )
+            if max_weight_change is not None:
+                constraints.append(cp.abs(w - current_weights) <= max_weight_change)
 
         # Formulate and solve the problem
         prob = cp.Problem(objective, constraints)

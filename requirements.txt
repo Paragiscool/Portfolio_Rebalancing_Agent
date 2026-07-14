@@ -10,6 +10,15 @@ streamlit
 pytest
 black
 ruff
+langchain
+langchain-openai
+langchain-community
+pydantic
+textstat
+xgboost
+shap
+lime
+matplotlib
 pydantic
 pyyaml
 pyarrow
