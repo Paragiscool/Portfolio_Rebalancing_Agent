@@ -6,3 +6,7 @@ env/
 venv/
 data/
 *.exe
+*.pdf
+*.msi
+.coverage
+.agents/
