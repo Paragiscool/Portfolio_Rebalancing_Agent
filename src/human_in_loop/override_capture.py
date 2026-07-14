@@ -8,7 +8,7 @@ class OverrideCapture:
         self.audit_file = audit_file
         os.makedirs(os.path.dirname(self.audit_file), exist_ok=True)
         if not os.path.exists(self.audit_file):
-            with open(self.audit_file, 'w') as f:
+            with open(self.audit_file, 'w', encoding='utf-8') as f:
                 json.dump([], f)
 
     def capture_override(self, original_trades: List[Dict], modified_trades: List[Dict], reason: str, advisor_id: str) -> Dict[str, Any]:
@@ -23,12 +23,12 @@ class OverrideCapture:
             "reason": reason
         }
 
-        with open(self.audit_file, 'r') as f:
+        with open(self.audit_file, 'r', encoding='utf-8') as f:
             data = json.load(f)
             
         data.append(override_record)
         
-        with open(self.audit_file, 'w') as f:
+        with open(self.audit_file, 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=4)
             
         return {"status": "success", "record_id": len(data)}
@@ -60,7 +60,7 @@ class EscalationManager:
         doc += "- Does the client's current liquidity situation permit this volume of trades?\n"
         doc += "- Are there overriding tax constraints not captured in the system?\n"
         
-        with open(filename, 'w') as f:
+        with open(filename, 'w', encoding='utf-8') as f:
             f.write(doc)
             
         return filename

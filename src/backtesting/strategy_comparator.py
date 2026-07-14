@@ -56,7 +56,7 @@ class StrategyComparator:
         doc += "The Agent successfully executed rebalancing trades to maintain target drift constraints."
         
         filepath = os.path.join(self.output_dir, "backtest_report.md")
-        with open(filepath, 'w') as f:
+        with open(filepath, 'w', encoding='utf-8') as f:
             f.write(doc)
 
 if __name__ == "__main__":
