@@ -9,6 +9,8 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    env:
+      OPENAI_API_KEY: "mock_key_for_github_actions"
     
     steps:
     - uses: actions/checkout@v4
